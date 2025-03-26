@@ -1,6 +1,5 @@
 package br.insper.prova.usuario;
 
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
@@ -12,8 +11,13 @@ import org.springframework.http.HttpStatus;
 @Service
 public class UsuarioService {
 
-    private final RestTemplate restTemplate = new RestTemplate();
+    private final RestTemplate restTemplate;
     private final String URL_BASE = "http://56.124.127.89:8080/api/usuario/";
+
+    // 🔧 Construtor que permite injeção no teste
+    public UsuarioService(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
 
     public UsuarioDTO validarAdmin(String email) {
         try {
@@ -42,7 +46,6 @@ public class UsuarioService {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro inesperado");
         }
     }
-
 
     public UsuarioDTO buscarUsuario(String email) {
         try {
