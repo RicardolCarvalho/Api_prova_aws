@@ -13,26 +13,13 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>prova</name>
 	<description>Demo project for Spring Boot</description>
-	<url/>
-	<licenses>
-		<license/>
-	</licenses>
-	<developers>
-		<developer/>
-	</developers>
-	<scm>
-		<connection/>
-		<developerConnection/>
-		<tag/>
-		<url/>
-	</scm>
+
 	<properties>
 		<java.version>21</java.version>
 		<project.test.result.directory>${project.build.directory}/test-results</project.test.result.directory>
 	</properties>
 
 	<dependencies>
-
 		<!-- Spring Web MVC (REST endpoints) -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -69,29 +56,23 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-
-
 	</dependencies>
-
 
 	<build>
 		<plugins>
+			<!-- Spring Boot Maven Plugin -->
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 
+			<!-- JaCoCo Plugin -->
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
 				<version>0.8.12</version>
 				<executions>
+					<!-- prepare agent before tests -->
 					<execution>
 						<id>pre-test</id>
 						<goals>
@@ -103,6 +84,7 @@
 						</configuration>
 					</execution>
 
+					<!-- generate report after tests, excluding AuthorizationConfig -->
 					<execution>
 						<id>post-test</id>
 						<phase>test</phase>
@@ -112,10 +94,18 @@
 						<configuration>
 							<dataFile>${project.test.result.directory}/jacoco/jacoco.exec</dataFile>
 							<outputDirectory>${project.test.result.directory}/jacoco</outputDirectory>
+							<excludes>
+								<!-- ignore your security config class (and any inner classes) -->
+								<exclude>**/AuthorizationConfig*.class</exclude>
+								<!-- if you prefer to ignore the whole config package, uncomment: -->
+								<!-- <exclude>br/insper/prova/config/**</exclude> -->
+							</excludes>
 						</configuration>
 					</execution>
 				</executions>
 			</plugin>
+
+			<!-- Surefire Plugin to run tests -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
@@ -127,5 +117,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
 </project>
