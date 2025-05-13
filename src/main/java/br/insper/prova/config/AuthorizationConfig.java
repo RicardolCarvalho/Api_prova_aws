@@ -52,7 +52,6 @@ public class AuthorizationConfig {
         src.registerCorsConfiguration("/**", cfg);
         return src;
     }
-
     @Bean
     public JwtAuthenticationConverter jwtAuthenticationConverter() {
         JwtGrantedAuthoritiesConverter gal = new JwtGrantedAuthoritiesConverter();
