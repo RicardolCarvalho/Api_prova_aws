@@ -14,29 +14,29 @@ public class TarefaRequest {
 
     public TarefaRequest() {}
 
-    public String getTitulo() {
+    public String getTitle() {
         return titulo;
     }
-    public String getDescricao() {
+    public String getDescription() {
         return descricao;
     }
-    public String getPrioridade() {
+    public String getPriority() {
         return prioridade;
     }
-    public String getEmailCriador() {
+    public String getCreatorEmail() {
         return emailcriador;
     }
 
-    public void setTitulo(String titulo) {
+    public void setTitle(String titulo) {
         this.titulo = titulo;
     }
-    public void setDescricao(String descricao) {
+    public void setDescription(String descricao) {
         this.descricao = descricao;
     }
-    public void setPrioridade(String prioridade) {
+    public void setPriority(String prioridade) {
         this.prioridade = prioridade;
     }
-    public void setEmailCriador(String emailcriador) {
+    public void setCreatorEmail(String emailcriador) {
         this.emailcriador = emailcriador;
     }
 }
