@@ -27,7 +27,6 @@ public class TarefaRequest {
         return emailcriador;
     }
 
-    // Setters (usados pelo Jackson ao desserializar o JSON)
     public void setTitulo(String titulo) {
         this.titulo = titulo;
     }
