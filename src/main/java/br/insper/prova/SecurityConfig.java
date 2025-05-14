@@ -1,5 +1,7 @@
-package br.insper.prova.config;
+package br.insper.prova;
 
+
+import java.util.List;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -14,12 +16,10 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.List;
-
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity
-public class AuthorizationConfig {
+@EnableMethodSecurity(prePostEnabled = true)
+public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -27,17 +27,16 @@ public class AuthorizationConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.OPTIONS, "/api/**").permitAll()
-                        .requestMatchers("/public/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/cursos/**", "/api/avaliacoes/**").authenticated()
-                        .requestMatchers(HttpMethod.POST, "/api/cursos/**", "/api/avaliacoes/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.PUT, "/api/cursos/**", "/api/avaliacoes/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/api/cursos/**", "/api/avaliacoes/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.OPTIONS, "/tarefa/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/tarefa/**").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/tarefa/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/tarefa/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2
                         .jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter()))
                 );
+
         return http.build();
     }
 
@@ -45,20 +44,24 @@ public class AuthorizationConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration cfg = new CorsConfiguration();
         cfg.addAllowedOriginPattern("*");
-        cfg.setAllowedMethods(List.of("GET","POST","PUT","DELETE","OPTIONS"));
+        cfg.setAllowedMethods(List.of("GET", "POST", "DELETE", "OPTIONS"));
         cfg.setAllowedHeaders(List.of("*"));
         cfg.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource src = new UrlBasedCorsConfigurationSource();
         src.registerCorsConfiguration("/**", cfg);
         return src;
     }
+
     @Bean
     public JwtAuthenticationConverter jwtAuthenticationConverter() {
-        JwtGrantedAuthoritiesConverter gal = new JwtGrantedAuthoritiesConverter();
-        gal.setAuthoritiesClaimName("https://musica-insper.com/roles");
-        gal.setAuthorityPrefix("ROLE_");
+        JwtGrantedAuthoritiesConverter rolesConverter = new JwtGrantedAuthoritiesConverter();
+        // usa o claim customizado que você publicou no Auth0
+        rolesConverter.setAuthoritiesClaimName("https://musica-insper.com/roles");
+        // prefixa cada entry com "ROLE_"
+        rolesConverter.setAuthorityPrefix("ROLE_");
+
         JwtAuthenticationConverter conv = new JwtAuthenticationConverter();
-        conv.setJwtGrantedAuthoritiesConverter(gal);
+        conv.setJwtGrantedAuthoritiesConverter(rolesConverter);
         return conv;
     }
 }
