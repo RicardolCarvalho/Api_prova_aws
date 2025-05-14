@@ -14,6 +14,7 @@ public class TarefaService {
         this.repo = repo;
     }
 
+    @PreAuthorize("hasAuthority('SCOPE_read:tasks')")
     public List<TarefaResponse> listAll() {
         return repo.findAll().stream()
                 .map(tarefa -> new TarefaResponse(tarefa.getId(), tarefa.getTitle(), tarefa.getDescription(),
