@@ -14,16 +14,10 @@ public class TarefaService {
         this.repo = repo;
     }
 
-    @PreAuthorize("hasAuthority('SCOPE_read:tasks')")
     public List<TarefaResponse> listAll() {
         return repo.findAll().stream()
-                .map(t -> new TarefaResponse(
-                        t.getId(),
-                        t.getTitle(),
-                        t.getDescription(),
-                        t.getPriority(),
-                        t.getCreatorEmail()
-                ))
+                .map(tarefa -> new TarefaResponse(tarefa.getId(), tarefa.getTitle(), tarefa.getDescription(),
+                        tarefa.getPriority(), tarefa.getCreatorEmail()))
                 .collect(Collectors.toList());
     }
 
