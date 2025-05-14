@@ -12,34 +12,32 @@ public class TarefaRequest {
     @NotBlank
     private String emailcriador;
 
-    // Construtor vazio (usado pelo Jackson)
     public TarefaRequest() {}
 
-    // Getters
-    public String getTitle() {
+    public String getTitulo() {
         return titulo;
     }
-    public String getDescription() {
+    public String getDescricao() {
         return descricao;
     }
-    public String getPriority() {
+    public String getPrioridade() {
         return prioridade;
     }
-    public String getCreatorEmail() {
+    public String getEmailCriador() {
         return emailcriador;
     }
 
     // Setters (usados pelo Jackson ao desserializar o JSON)
-    public void setTitle(String titulo) {
+    public void setTitulo(String titulo) {
         this.titulo = titulo;
     }
-    public void setDescription(String descricao) {
+    public void setDescricao(String descricao) {
         this.descricao = descricao;
     }
-    public void setPriority(String prioridade) {
+    public void setPrioridade(String prioridade) {
         this.prioridade = prioridade;
     }
-    public void setCreatorEmail(String emailcriador) {
+    public void setEmailCriador(String emailcriador) {
         this.emailcriador = emailcriador;
     }
 }
